@@ -2,9 +2,9 @@ import FormStyled from "./Form.styled";
 import Button from "./Button.styled";
 import Input from "./Input.styled";
 import { useDispatch, useSelector } from "react-redux";
-import { addContact } from "reduxToolkit/contactsSlice";
 import { getContacts } from "reduxToolkit/selectors";
 import { Notify } from "notiflix";
+import { addContactBase } from "reduxToolkit/operations";
 
 const Form = () => {
     const dispatch = useDispatch();
@@ -21,7 +21,7 @@ const Form = () => {
             
         }
         else {
-            dispatch(addContact(obj));
+            dispatch(addContactBase(obj));
             Notify.success(`New contact '${name}' is successfully created`)
         }
         form.reset();

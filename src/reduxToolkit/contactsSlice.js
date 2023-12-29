@@ -1,31 +1,54 @@
 import {createSlice} from "@reduxjs/toolkit";
-import { nanoid } from "nanoid";
+import { fetchContacts, addContactBase, deleteContacts } from "./operations";
 
-const contactsInitialState = [];
+const contactsInitialState = {
+    items: [],
+    isLoading: false,
+    error: null,
+};
 const contactsSlice = createSlice({
     name: 'contacts',
     initialState: contactsInitialState,
-    reducers: {
-        addContact: {
-            reducer(state, action) {
-                state.push(action.payload);
-            },
-            prepare({ name, number }) {
-                return {
-                    payload: {
-                        name,
-                        number,
-                        id: nanoid(),    
-                    }
-                }
-            }
-        },
-        deleteContact(state, action) {
-            return state.filter(contact => contact.id !== action.payload);
-        },
-        filterContacts(state, action) {
-            return state.filter(contact => contact.name.includes(action.payload))
-        },
+    extraReducers: builder => {
+        builder
+            .addCase(fetchContacts.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(fetchContacts.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.error = null;
+                state.items = action.payload;
+            })
+            .addCase(fetchContacts.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+            })
+            .addCase(addContactBase.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(addContactBase.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.error = null;
+                state.items.push(action.payload);
+            })
+            .addCase(addContactBase.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+            })
+            .addCase(deleteContacts.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(deleteContacts.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.error = null;
+                const index = state.items.findIndex(item => item.id === action.payload);
+                state.items.splice(index, 1);
+                // state.items.filter(item => item.id !== action.payload);
+            })
+            .addCase(deleteContacts.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+            })
     }
 });
 
