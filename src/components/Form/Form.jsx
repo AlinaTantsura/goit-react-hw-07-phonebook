@@ -2,13 +2,13 @@ import FormStyled from "./Form.styled";
 import Button from "./Button.styled";
 import Input from "./Input.styled";
 import { useDispatch, useSelector } from "react-redux";
-import { getContacts } from "reduxToolkit/selectors";
+import { selectContacts } from "reduxToolkit/selectors";
 import { Notify } from "notiflix";
 import { addContactBase } from "reduxToolkit/operations";
 
 const Form = () => {
     const dispatch = useDispatch();
-    const contacts = useSelector(getContacts);
+    const contacts = useSelector(selectContacts);
 
     const handleSubmit = (event) => {
         event.preventDefault();

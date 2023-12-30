@@ -1,10 +1,10 @@
 import Input from "components/Form/Input.styled";
 import { useDispatch, useSelector } from "react-redux";
 import { addFilter } from "reduxToolkit/filterSlice";
-import { getFilterWord } from "reduxToolkit/selectors";
+import { selectFilterWord } from "reduxToolkit/selectors";
 
 const Filter = () => {
-    const filter = useSelector(getFilterWord);
+    const filter = useSelector(selectFilterWord);
     const dispatch = useDispatch()
     const handleChange = (event) => {
         dispatch(addFilter(event.target.value));
